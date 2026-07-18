@@ -6,7 +6,6 @@ export const useBudget = () => {
       if (!context) {
             throw new Error('useBudget nust be used witjin a BudgetProvider');
       };
-
       return context;
 }
 
