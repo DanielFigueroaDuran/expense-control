@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useBudget } from "../hooks/useBudget";
 
 const BudgetForm = () => {
       const [budget, setBudget] = useState(0);
+      const { dispatch } = useBudget();
 
       const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const value = e.target.valueAsNumber;
@@ -12,8 +14,13 @@ const BudgetForm = () => {
 
       const isInvalidBudget = budget <= 0;
 
+      const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            dispatch({ type: 'add-budget', payload: { budget } })
+      };
+
       return (
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
                   <div className="flex flex-col space-y-5">
                         <label htmlFor="budget" className="text-blue-600 font-bold text-center">
                               Definir Presupuesto
