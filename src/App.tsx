@@ -1,7 +1,13 @@
 import './index.css'
 import BudgetForm from './components/BudgetForm';
+import { useBudget } from './hooks/useBudget';
+import BudgetTracker from './components/BudgetTracker';
 
 function App() {
+  const { state } = useBudget();
+
+  const isValidBudget = state.budget > 0;
+  // const isValidBudget = state.budget > 0;
 
   return (
     <>
@@ -11,7 +17,10 @@ function App() {
         </h1>
       </header>
       <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg mt-10 p-10">
-        <BudgetForm />
+        {
+          isValidBudget ? <BudgetTracker /> : <BudgetForm />
+        }
+
       </div>
     </>
   )
