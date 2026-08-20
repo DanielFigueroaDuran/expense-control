@@ -3,7 +3,7 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { categories } from "../data/categories"
 import { useState } from 'react';
-import type { DraftExpense } from '../types';
+import type { DraftExpense, Value } from '../types';
 
 
 const ExpenseForm = () => {
@@ -13,6 +13,27 @@ const ExpenseForm = () => {
             category: '',
             date: new Date()
       });
+
+      const handleChange = (event:
+            React.ChangeEvent<HTMLInputElement> |
+            React.ChangeEvent<HTMLSelectElement>) => {
+            const { name, value } = event.target
+            const isAmountField = ['amount'].includes(name);
+            //console.log(isAmountField);
+            setExpense({
+                  ...expense,
+                  [name]: isAmountField ? +value : value
+            });
+
+      };
+
+      const handleChangeDate = (value: Value) => {
+            // console.log(value);
+            setExpense({
+                  ...expense,
+                  date: value
+            })
+      }
 
       return (
             <form className="space-y-5">
@@ -33,7 +54,7 @@ const ExpenseForm = () => {
                               placeholder="Añade el Nombre del Gasto"
                               className="bg-slate-100 p-2"
                               name="expenseName"
-                              value={expense.expenseName}
+                              onChange={handleChange}
                         />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -50,7 +71,7 @@ const ExpenseForm = () => {
                               placeholder="Añade la Cantidad del Gasto"
                               className="bg-slate-100 p-2"
                               name="amount"
-                              value={expense.amount}
+                              onChange={handleChange}
                         />
                   </div>
                   <div className="flex flex-col gap-2">
@@ -65,7 +86,7 @@ const ExpenseForm = () => {
                               id="category"
                               className="bg-slate-100 p-2"
                               name="category"
-                              value={expense.category}
+                              onChange={handleChange}
                         >
                               <option value="">-- Seleccione --</option>
                               {categories.map(category => (
@@ -90,6 +111,7 @@ const ExpenseForm = () => {
                         <DatePicker
                               className="bg-slate-100 p-2 border-0"
                               value={expense.date}
+                              onChange={handleChangeDate}
                         />
                   </div>
 
