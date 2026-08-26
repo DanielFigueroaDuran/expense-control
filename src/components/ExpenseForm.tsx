@@ -4,6 +4,7 @@ import 'react-calendar/dist/Calendar.css';
 import { categories } from "../data/categories"
 import { useState } from 'react';
 import type { DraftExpense, Value } from '../types';
+import ErrorMessage from './ErrorMessage';
 
 
 const ExpenseForm = () => {
@@ -13,10 +14,12 @@ const ExpenseForm = () => {
             category: '',
             date: new Date()
       });
+      const [error, setError] = useState('');
 
-      const handleChange = (event:
-            React.ChangeEvent<HTMLInputElement> |
-            React.ChangeEvent<HTMLSelectElement>) => {
+      const handleChange = (
+            event:
+                  React.ChangeEvent<HTMLInputElement> |
+                  React.ChangeEvent<HTMLSelectElement>) => {
             const { name, value } = event.target
             const isAmountField = ['amount'].includes(name);
             //console.log(isAmountField);
@@ -35,11 +38,24 @@ const ExpenseForm = () => {
             })
       }
 
+      const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+            event.preventDefault();
+            //Validar 
+            if (Object.values(expense).includes('')) {
+                  setError('Todos Los Campos Son Obligatorios');
+                  return;
+            };
+            console.log('todo bien...');
+      };
+
       return (
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
                   <legend className="uppercase text-center text-2xl font-black border-b-4 border-blue-500 py-2">
                         Nuevo Gasto
                   </legend>
+
+                  {error && <ErrorMessage>{error}</ErrorMessage>}
+
                   <div className="flex flex-col gap-2">
                         <label
                               htmlFor="expenseName"
