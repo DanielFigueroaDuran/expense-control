@@ -5,6 +5,7 @@ import { categories } from "../data/categories"
 import { useState } from 'react';
 import type { DraftExpense, Value } from '../types';
 import ErrorMessage from './ErrorMessage';
+import { useBudget } from '../hooks/useBudget';
 
 
 const ExpenseForm = () => {
@@ -15,6 +16,7 @@ const ExpenseForm = () => {
             date: new Date()
       });
       const [error, setError] = useState('');
+      const { dispatch } = useBudget();
 
       const handleChange = (
             event:
@@ -45,7 +47,9 @@ const ExpenseForm = () => {
                   setError('Todos Los Campos Son Obligatorios');
                   return;
             };
-            console.log('todo bien...');
+
+            // add a new expense
+            dispatch({ type: 'add-expense', payload: { expense } });
       };
 
       return (
