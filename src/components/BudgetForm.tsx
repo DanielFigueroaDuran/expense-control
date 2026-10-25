@@ -1,22 +1,24 @@
 import { useState } from "react";
 import { useBudget } from "../hooks/useBudget";
+import type { Currency } from "../reducers/budget-reducer";
 
 const BudgetForm = () => {
       const [budget, setBudget] = useState(0);
+      const [currency, setCurrency] = useState<Currency>('');
       const { dispatch } = useBudget();
 
-      const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.valueAsNumber;
+      const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+            const value = event.target.valueAsNumber;
             // If the user deleted the entire number, we force a 0 in the state.
             setBudget(isNaN(value) ? 0 : value);
 
       };
 
-      const isInvalidBudget = budget <= 0;
+      const isInvalidBudget = budget <= 0 || currency === '';
 
       const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
             event.preventDefault();
-            dispatch({ type: 'add-budget', payload: { budget } })
+            dispatch({ type: 'add-budget', payload: { budget, currency } })
       };
 
       return (
@@ -25,16 +27,35 @@ const BudgetForm = () => {
                         <label htmlFor="budget" className="text-blue-600 font-bold text-center">
                               Definir Presupuesto
                         </label>
-                        <input
-                              id="budget"
-                              type="number"
-                              className="w-full bg-white border border-gray-200 p-2"
-                              placeholder="Define tu Presupuesto"
-                              name="budget"
-                              value={budget === 0 ? '' : budget}
-                              onChange={handleChange}
-                        />
+                        <div className="flex bg slate-100 border border-gray-200  rounded-sm">
+                              <select
+                                    name="currency"
+                                    id="currency"
+                                    value={currency}
+                                    className=" p-2 border-r border-gray-200"
+                                    onChange={(event) => {
+                                          const value = event.target.value
+                                          if (value === "$" || value === "€" || value === "") {
+                                                setCurrency(value);
+                                          }
+                                    }}
+                              >
+                                    <option value="">--</option>
+                                    <option value="$">$</option>
+                                    <option value="€">€</option>
+                              </select>
+                              <input
+                                    id="budget"
+                                    type="number"
+                                    className="w-full bg-white  p-2"
+                                    placeholder="Define tu Presupuesto"
+                                    name="budget"
+                                    value={budget === 0 ? '' : budget}
+                                    onChange={handleChange}
+                              />
+                        </div>
                   </div>
+
                   <input
                         type="submit"
                         value='Definir Presupuesto'
