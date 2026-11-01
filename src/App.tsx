@@ -7,7 +7,7 @@ import ExpenseModal from './components/ExpenseModal';
 function App() {
   const { state } = useBudget();
 
-  const isValidBudget = state.budget > 0;
+  const isValidBudget = state.budget.budget > 0 && state.budget.currency !== "";
   // const isValidBudget = state.budget > 0;
 
   return (
@@ -19,7 +19,15 @@ function App() {
       </header>
       <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg mt-10 p-10">
         {
-          isValidBudget ? <BudgetTracker /> : <BudgetForm />
+          isValidBudget
+            ? (<div className="animate-fade-in">
+              <BudgetTracker />
+            </div>)
+            : (
+              <div className="animate-fade-in">
+                <BudgetForm />
+              </div>
+            )
         }
       </div>
       {
