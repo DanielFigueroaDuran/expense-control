@@ -22,14 +22,22 @@ const ExpenseForm = () => {
             event:
                   React.ChangeEvent<HTMLInputElement> |
                   React.ChangeEvent<HTMLSelectElement>) => {
+
             const { name, value } = event.target
-            const isAmountField = ['amount'].includes(name);
-            //console.log(isAmountField);
+            //const isAmountField = ['amount'].includes(name);
+
+            if (name === 'expenseName') {
+                  const onlyLettersRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]*$/;
+
+                  if (!onlyLettersRegex.test(value.trim())) {
+                        return;
+                  };
+            };
+
             setExpense({
                   ...expense,
-                  [name]: isAmountField ? +value : value
+                  [name]: name === 'amount' ? +value : value
             });
-
       };
 
       const handleChangeDate = (value: Value) => {
@@ -37,8 +45,8 @@ const ExpenseForm = () => {
             setExpense({
                   ...expense,
                   date: value
-            })
-      }
+            });
+      };
 
       const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
             event.preventDefault();
@@ -74,6 +82,7 @@ const ExpenseForm = () => {
                               placeholder="Añade el Nombre del Gasto"
                               className="bg-slate-100 p-2"
                               name="expenseName"
+                              value={expense.expenseName}
                               onChange={handleChange}
                         />
                   </div>
