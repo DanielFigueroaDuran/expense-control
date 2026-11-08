@@ -3,8 +3,8 @@ import ExpenseDetail from "./ExpenseDetail";
 
 const ExpenseList = () => {
       const { state } = useBudget();
-
       const isEnty = state.expenses.length === 0;
+
       return (
             <div className="mt-10">
                   {isEnty
