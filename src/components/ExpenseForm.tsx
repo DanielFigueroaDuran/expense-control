@@ -50,14 +50,20 @@ const ExpenseForm = () => {
 
       const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
             event.preventDefault();
-            //Validar 
+            //validate
             if (Object.values(expense).includes('')) {
                   setError('Todos Los Campos Son Obligatorios');
                   return;
             };
-
             // add a new expense
             dispatch({ type: 'add-expense', payload: { expense } });
+
+            setExpense({
+                  amount: 0,
+                  expenseName: '',
+                  category: '',
+                  date: new Date()
+            });
       };
 
       return (
