@@ -19,7 +19,7 @@ const ExpenseDetail = ({ expense }: ExpenseDetailProps) => {
       };
 
       const handleEdit = () => {
-            // dispatch({ type: 'get-expense-by-id', payload: { id: expense.id } });
+            dispatch({ type: 'get-expense-by-id', payload: { id: expense.id } })
       };
 
       return (
