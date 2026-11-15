@@ -17,6 +17,21 @@ export type BudgetActions =
       { type: 'get-expense-by-id', payload: { id: Expense['id'] } } |
       { type: 'update-expense', payload: { expense: Expense } }
 
+const initialBudget = (): BudgetData => {
+      const localStorageBudget = localStorage.getItem('budget');
+      return localStorageBudget
+            ? JSON.parse(localStorageBudget)
+            : {
+                  budget: 0,
+                  currency: ''
+            };
+};
+
+const localStorageExpenses = (): Expense[] => {
+      const localStorageExpenses = localStorage.getItem('expenses');
+      return localStorageExpenses ? JSON.parse(localStorageExpenses) : [];
+};
+
 export type BudgetState = {
       budget: BudgetData,
       modal: boolean,
@@ -25,12 +40,9 @@ export type BudgetState = {
 };
 
 export const initialState: BudgetState = {
-      budget: {
-            budget: 0,
-            currency: ""
-      },
+      budget: initialBudget(),
       modal: false,
-      expenses: [],
+      expenses: localStorageExpenses(),
       editingId: ''
 };
 
@@ -47,6 +59,8 @@ export const budgetReducer = (
 ): BudgetState => {
       switch (action.type) {
             case 'add-budget':
+                  localStorage.setItem('budget', JSON.stringify(action.payload));
+
                   return {
                         ...state,
                         budget: action.payload

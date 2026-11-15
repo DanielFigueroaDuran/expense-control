@@ -4,12 +4,17 @@ import { useBudget } from './hooks/useBudget';
 import BudgetTracker from './components/BudgetTracker';
 import ExpenseModal from './components/ExpenseModal';
 import ExpenseList from './components/ExpenseList';
+import { useEffect } from 'react';
 
 function App() {
   const { state } = useBudget();
 
   const isValidBudget = state.budget.budget > 0 && state.budget.currency !== "";
-  // const isValidBudget = state.budget > 0;
+
+  useEffect(() => {
+    localStorage.setItem('budget', JSON.stringify(state.budget));
+    localStorage.setItem('expenses', JSON.stringify(state.expenses));
+  }), [state.budget, state.expenses];
 
   return (
     <>
