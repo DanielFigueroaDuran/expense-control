@@ -2,21 +2,31 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { categories } from "../data/categories"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { DraftExpense, Value } from '../types';
 import ErrorMessage from './ErrorMessage';
 import { useBudget } from '../hooks/useBudget';
 
-
 const ExpenseForm = () => {
       const [expense, setExpense] = useState<DraftExpense>({
-            amount: 0,
             expenseName: '',
+            amount: 0,
             category: '',
             date: new Date()
       });
       const [error, setError] = useState('');
-      const { dispatch } = useBudget();
+      const { dispatch, state } = useBudget();
+
+      useEffect(() => {
+            if (state.editingId) {
+                  const editingExpense = state.expenses.find(currentExpense => currentExpense.id === state.editingId);
+
+                  if (editingExpense) {
+                        setExpense(editingExpense);
+                  };
+            };
+      }, [state.editingId, state.expenses])
+
 
       const handleChange = (
             event:
@@ -55,9 +65,15 @@ const ExpenseForm = () => {
                   setError('Todos Los Campos Son Obligatorios');
                   return;
             };
-            // add a new expense
-            dispatch({ type: 'add-expense', payload: { expense } });
 
+            //add or update expense
+            if (state.editingId) {
+                  dispatch({ type: 'update-expense', payload: { expense: { id: state.editingId, ...expense } } })
+            } else {
+                  dispatch({ type: 'add-expense', payload: { expense } });
+            };
+
+            //reset state
             setExpense({
                   amount: 0,
                   expenseName: '',
@@ -106,6 +122,7 @@ const ExpenseForm = () => {
                               placeholder="Añade la Cantidad del Gasto"
                               className="bg-slate-100 p-2"
                               name="amount"
+                              value={(expense.amount === 0) ? '' : expense.amount}
                               onChange={handleChange}
                         />
                   </div>
@@ -121,6 +138,7 @@ const ExpenseForm = () => {
                               id="category"
                               className="bg-slate-100 p-2"
                               name="category"
+                              value={expense.category}
                               onChange={handleChange}
                         >
                               <option value="">-- Seleccione --</option>

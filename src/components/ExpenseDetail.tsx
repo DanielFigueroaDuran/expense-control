@@ -19,7 +19,7 @@ const ExpenseDetail = ({ expense }: ExpenseDetailProps) => {
       };
 
       const handleEdit = () => {
-            dispatch({ type: 'get-expense-by-id', payload: { id: expense.id } })
+            dispatch({ type: 'get-expense-by-id', payload: { id: expense.id } });
       };
 
       return (
@@ -27,8 +27,8 @@ const ExpenseDetail = ({ expense }: ExpenseDetailProps) => {
                   <div className="bg-white p-6 w-full flex items-center gap-5">
                         <div className="">
                               <img
-                                    src={`/icono_${categoryInfo?.icon || 'default'}.svg`}
-                                    alt={categoryInfo?.name || 'Categoría'}
+                                    src={`/icono_${categoryInfo?.icon}.svg`}
+                                    alt={categoryInfo?.name}
                                     className="w-20"
                               />
                         </div>
