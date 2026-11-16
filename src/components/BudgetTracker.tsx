@@ -3,6 +3,8 @@ import AmountDisplay from "./AmountDisplay"
 
 const BudgetTracker = () => {
       const { state } = useBudget();
+      const totalExpenses = state.expenses.reduce((total, expense) => expense.amount + total, 0);
+      const remainingBudget = state.budget.budget - totalExpenses;
 
       return (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -21,6 +23,16 @@ const BudgetTracker = () => {
                               label="Presupuesto"
                               currency={state.budget.currency}
                               amount={state.budget.budget}
+                        />
+
+                        <AmountDisplay
+                              label="Dispoible"
+                              amount={remainingBudget}
+                        />
+
+                        <AmountDisplay
+                              label="Gastado"
+                              amount={totalExpenses}
                         />
                   </div>
             </div>
