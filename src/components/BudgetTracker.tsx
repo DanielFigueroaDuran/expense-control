@@ -2,9 +2,7 @@ import { useBudget } from "../hooks/useBudget"
 import AmountDisplay from "./AmountDisplay"
 
 const BudgetTracker = () => {
-      const { state } = useBudget();
-      const totalExpenses = state.expenses.reduce((total, expense) => expense.amount + total, 0);
-      const remainingBudget = state.budget.budget - totalExpenses;
+      const { state, totalExpenses, remainingBudget } = useBudget();
 
       return (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -26,7 +24,7 @@ const BudgetTracker = () => {
                         />
 
                         <AmountDisplay
-                              label="Dispoible"
+                              label="Disponible"
                               amount={remainingBudget}
                         />
 

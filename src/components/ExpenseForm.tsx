@@ -15,7 +15,8 @@ const ExpenseForm = () => {
             date: new Date()
       });
       const [error, setError] = useState('');
-      const { dispatch, state } = useBudget();
+      const [previousAmount, setPreviousAmount] = useState(0);
+      const { dispatch, state, remainingBudget } = useBudget();
 
       useEffect(() => {
             if (state.editingId) {
@@ -23,6 +24,7 @@ const ExpenseForm = () => {
 
                   if (editingExpense) {
                         setExpense(editingExpense);
+                        setPreviousAmount(editingExpense.amount);
                   };
             };
       }, [state.editingId, state.expenses])
@@ -65,7 +67,11 @@ const ExpenseForm = () => {
                   setError('Todos Los Campos Son Obligatorios');
                   return;
             };
-
+            //verify that I don’t exceed the limit
+            if ((expense.amount - previousAmount) > remainingBudget) {
+                  setError('Ese gasto se sale del presupuesto');
+                  return;
+            };
             //add or update expense
             if (state.editingId) {
                   dispatch({ type: 'update-expense', payload: { expense: { id: state.editingId, ...expense } } })
@@ -80,6 +86,7 @@ const ExpenseForm = () => {
                   category: '',
                   date: new Date()
             });
+            //setPreviousAmount(0);
       };
 
       return (
