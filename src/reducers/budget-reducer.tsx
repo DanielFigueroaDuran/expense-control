@@ -15,7 +15,8 @@ export type BudgetActions =
       { type: 'add-expense', payload: { expense: DraftExpense } } |
       { type: 'remove-expense', payload: { id: Expense['id'] } } |
       { type: 'get-expense-by-id', payload: { id: Expense['id'] } } |
-      { type: 'update-expense', payload: { expense: Expense } }
+      { type: 'update-expense', payload: { expense: Expense } } |
+      { type: 'reset-app' }
 
 const initialBudget = (): BudgetData => {
       const localStorageBudget = localStorage.getItem('budget');
@@ -102,6 +103,18 @@ export const budgetReducer = (
                         modal: false,
                         editingId: ''
                   };
+            case 'reset-app':
+                  return {
+                        ...state,
+                        budget: {
+                              budget: 0,
+                              currency: ''
+                        },
+                        modal: false,
+                        expenses: [],
+                        editingId: ''
+
+                  }
             default:
                   return state;
       };
