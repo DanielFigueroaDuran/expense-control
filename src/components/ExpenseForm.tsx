@@ -86,7 +86,7 @@ const ExpenseForm = () => {
                   category: '',
                   date: new Date()
             });
-            //setPreviousAmount(0);
+            setPreviousAmount(0);
       };
 
       return (
