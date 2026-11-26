@@ -3,7 +3,9 @@ import ExpenseDetail from "./ExpenseDetail";
 
 const ExpenseList = () => {
       const { state } = useBudget();
-      const isEnty = state.expenses.length === 0;
+      const filteredExpenses = state.currentCategory ? state.expenses.filter(
+            expense => expense.category === state.currentCategory) : state.expenses;
+      const isEnty = filteredExpenses.length === 0;
 
       return (
             <div className="mt-10">
@@ -12,7 +14,7 @@ const ExpenseList = () => {
                         : (
                               <>
                                     <p className="text-gray-600 text-2xl font-bold">Listado de Gasto</p>
-                                    {state.expenses.map(expense => (
+                                    {filteredExpenses.map(expense => (
                                           <ExpenseDetail
                                                 key={expense.id}
                                                 expense={expense}
